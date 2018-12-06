@@ -9,6 +9,7 @@
 namespace TendoPay\Integration\SaltEdge;
 
 use Illuminate\Support\ServiceProvider;
+use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 
 class SaltEdgeServiceProvider extends ServiceProvider
 {
@@ -43,6 +44,10 @@ class SaltEdgeServiceProvider extends ServiceProvider
 
         $this->app->singleton(ProviderService::class, function ($app) {
             return new ProviderService();
+        });
+
+        $this->app->singleton(EndpointCaller::class, function ($app) {
+            return new EndpointCaller();
         });
     }
 }
