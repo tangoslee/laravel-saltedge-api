@@ -13,7 +13,7 @@ use TendoPay\Integration\SaltEdge\Api\ApiEndpointErrorException;
 use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 use TendoPay\Integration\SaltEdge\Api\FilterDateOutOfRangeException;
 use TendoPay\Integration\SaltEdge\Api\FilterValueOutOfRangeException;
-use TendoPay\Integration\SaltEdge\Api\InvalidProviderCodeException;
+use TendoPay\Integration\SaltEdge\Api\Providers\InvalidProviderCodeException;
 use TendoPay\Integration\SaltEdge\Api\Providers\ProvidersListFilter;
 
 class ProviderService
@@ -55,7 +55,6 @@ class ProviderService
             switch ($e->getOriginalError()->error_class) {
                 case "ProviderNotFound":
                     throw new InvalidProviderCodeException($e);
-                    break;
                 default:
                     throw $e;
             }
@@ -85,10 +84,8 @@ class ProviderService
             switch ($e->getOriginalError()->error_class) {
                 case "DateOutOfRange":
                     throw new FilterDateOutOfRangeException($e);
-                    break;
                 case "ValueOutOfRange":
                     throw new FilterValueOutOfRangeException($e);
-                    break;
                 default:
                     throw $e;
             }

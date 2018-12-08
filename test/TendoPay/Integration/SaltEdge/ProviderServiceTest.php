@@ -16,7 +16,7 @@ use TendoPay\Integration\SaltEdge\Api\ApiEndpointErrorException;
 use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 use TendoPay\Integration\SaltEdge\Api\FilterDateOutOfRangeException;
 use TendoPay\Integration\SaltEdge\Api\FilterValueOutOfRangeException;
-use TendoPay\Integration\SaltEdge\Api\InvalidProviderCodeException;
+use TendoPay\Integration\SaltEdge\Api\Providers\InvalidProviderCodeException;
 use TendoPay\Integration\SaltEdge\Api\Providers\ProvidersListFilter;
 
 class ProviderServiceTest extends TestCase

@@ -6,8 +6,10 @@
  * Time: 15:26
  */
 
-namespace TendoPay\Integration\SaltEdge\Api;
+namespace TendoPay\Integration\SaltEdge\Api\Providers;
 
+
+use TendoPay\Integration\SaltEdge\Api\SaltEdgeApiException;
 
 class InvalidProviderCodeException extends SaltEdgeApiException
 {
