@@ -35,7 +35,7 @@ class CategoryServiceTest extends TestCase
      * @throws Api\SaltEdgeApiException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testShouldProperlyPassParametersForProvidersListToTheEndpointCaller()
+    public function testShouldProperlyPassParametersForCategoriesListToTheEndpointCaller()
     {
         // given
         $this->endpointCallerMock
