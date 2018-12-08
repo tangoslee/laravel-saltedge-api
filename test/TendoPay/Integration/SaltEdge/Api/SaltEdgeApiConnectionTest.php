@@ -18,15 +18,20 @@ class SaltEdgeApiConnectionTest extends TestCase
         return [SaltEdgeServiceProvider::class];
     }
 
-
+    /**
+     * @throws ApiKeyClientMismatchException
+     * @throws ClientDisabledException
+     * @throws UnexpectedErrorException
+     * @throws WrongApiKeyException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function testShouldCallCustomersListEndpointApi()
     {
         /** @var EndpointCaller $endpointCaller */
         $endpointCaller = $this->app->get(EndpointCaller::class);
 
-        /** @var \GuzzleHttp\Psr7\Response $response */
         $response = $endpointCaller->call("GET", "customers");
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertNotEmpty($response);
     }
 }

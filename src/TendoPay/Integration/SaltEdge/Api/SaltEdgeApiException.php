@@ -2,13 +2,16 @@
 /**
  * Created by PhpStorm.
  * User: robert
- * Date: 07.12.2018
- * Time: 00:27
+ * Date: 08.12.2018
+ * Time: 00:39
  */
 
 namespace TendoPay\Integration\SaltEdge\Api;
 
-class Response
+
+use Exception;
+
+class SaltEdgeApiException extends Exception
 {
 
 }
