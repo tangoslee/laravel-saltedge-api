@@ -16,7 +16,6 @@ class CategoryService
 {
     const LIST_URL = "categories";
 
-    /** @var EndpointCaller $endpointCaller */
     private $endpointCaller;
 
     public function __construct(EndpointCaller $endpointCaller)

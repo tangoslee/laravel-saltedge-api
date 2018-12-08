@@ -22,11 +22,12 @@ use stdClass;
 class EndpointCallerTest extends TestCase
 {
     /**
+     * @throws ApiEndpointErrorException
      * @throws ApiKeyClientMismatchException
      * @throws ClientDisabledException
-     * @throws UnexpectedErrorException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnexpectedStatusCodeException
      * @throws WrongApiKeyException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testShouldThrowExceptionForWrongApiKey()
     {
@@ -59,9 +60,10 @@ class EndpointCallerTest extends TestCase
     /**
      * @throws ApiKeyClientMismatchException
      * @throws ClientDisabledException
-     * @throws UnexpectedErrorException
+     * @throws ApiEndpointErrorException
      * @throws WrongApiKeyException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnexpectedStatusCodeException
      */
     public function testShouldThrowExceptionWhenClientDisabled()
     {
@@ -92,9 +94,10 @@ class EndpointCallerTest extends TestCase
     }
 
     /**
+     * @throws ApiEndpointErrorException
      * @throws ApiKeyClientMismatchException
      * @throws ClientDisabledException
-     * @throws UnexpectedErrorException
+     * @throws UnexpectedStatusCodeException
      * @throws WrongApiKeyException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
@@ -127,16 +130,17 @@ class EndpointCallerTest extends TestCase
     }
 
     /**
+     * @throws ApiEndpointErrorException
      * @throws ApiKeyClientMismatchException
      * @throws ClientDisabledException
-     * @throws UnexpectedErrorException
+     * @throws UnexpectedStatusCodeException
      * @throws WrongApiKeyException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testShouldThrowExceptionWhenUnexpectedErrorClassReturned()
     {
         // given
-        $this->expectException(UnexpectedErrorException::class);
+        $this->expectException(ApiEndpointErrorException::class);
 
         $clientMock = Mockery::mock(Client::class);
 
@@ -164,14 +168,15 @@ class EndpointCallerTest extends TestCase
     /**
      * @throws ApiKeyClientMismatchException
      * @throws ClientDisabledException
-     * @throws UnexpectedErrorException
+     * @throws ApiEndpointErrorException
      * @throws WrongApiKeyException
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws UnexpectedStatusCodeException
      */
     public function testShouldThrowExceptionWhenUnexpectedStatusCodeReturned()
     {
         // given
-        $this->expectException(UnexpectedErrorException::class);
+        $this->expectException(UnexpectedStatusCodeException::class);
 
         $clientMock = Mockery::mock(Client::class);
 

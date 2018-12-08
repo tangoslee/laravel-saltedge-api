@@ -9,6 +9,7 @@
 namespace TendoPay\Integration\SaltEdge;
 
 use GuzzleHttp\Client;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 
@@ -31,24 +32,24 @@ class SaltEdgeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(AccountService::class, function ($app) {
-            return new AccountService();
+        $this->app->singleton(AccountService::class, function (Application $app) {
+            return new AccountService($app->get(EndpointCaller::class));
         });
 
-        $this->app->singleton(CategoryService::class, function ($app) {
-            /** @var \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application $app */
+        $this->app->singleton(CategoryService::class, function (Application $app) {
+            /** @var | $app */
             return new CategoryService($app->get(EndpointCaller::class));
         });
 
-        $this->app->singleton(CustomerService::class, function ($app) {
-            return new CustomerService();
+        $this->app->singleton(CustomerService::class, function (Application $app) {
+            return new CustomerService($app->get(EndpointCaller::class));
         });
 
-        $this->app->singleton(ProviderService::class, function ($app) {
-            return new ProviderService();
+        $this->app->singleton(ProviderService::class, function (Application $app) {
+            return new ProviderService($app->get(EndpointCaller::class));
         });
 
-        $this->app->singleton(EndpointCaller::class, function ($app) {
+        $this->app->singleton(EndpointCaller::class, function (Application $app) {
             return new EndpointCaller(
                 new Client(),
                 config("saltedge.url"),

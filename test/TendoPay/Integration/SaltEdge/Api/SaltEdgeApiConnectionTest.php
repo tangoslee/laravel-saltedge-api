@@ -19,9 +19,10 @@ class SaltEdgeApiConnectionTest extends TestCase
     }
 
     /**
+     * @throws ApiEndpointErrorException
      * @throws ApiKeyClientMismatchException
      * @throws ClientDisabledException
-     * @throws UnexpectedErrorException
+     * @throws UnexpectedStatusCodeException
      * @throws WrongApiKeyException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */

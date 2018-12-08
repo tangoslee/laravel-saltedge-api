@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: robert
  * Date: 08.12.2018
- * Time: 00:46
+ * Time: 15:55
  */
 
 namespace TendoPay\Integration\SaltEdge\Api;
 
 
-class UnexpectedErrorException extends SaltEdgeApiException
+class FilterDateOutOfRangeException extends SaltEdgeApiException
 {
 
 }

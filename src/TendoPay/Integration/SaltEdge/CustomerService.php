@@ -9,13 +9,29 @@
 namespace TendoPay\Integration\SaltEdge;
 
 
+use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
+
 class CustomerService
 {
-    public function getById($id) {
+    private $endpointCaller;
+
+    /**
+     * CustomerService constructor.
+     *
+     * @param EndpointCaller $endpointCaller
+     */
+    public function __construct(EndpointCaller $endpointCaller)
+    {
+        $this->endpointCaller = $endpointCaller;
+    }
+
+    public function getById($id)
+    {
         return null;
     }
 
-    public function getAll() {
+    public function getAll()
+    {
         return [];
     }
 }

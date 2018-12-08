@@ -39,10 +39,11 @@ class EndpointCaller
      *
      * @return array|stdClass
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws UnexpectedErrorException
+     * @throws ApiEndpointErrorException
      * @throws ApiKeyClientMismatchException
      * @throws ClientDisabledException
      * @throws WrongApiKeyException
+     * @throws UnexpectedStatusCodeException
      */
     public function call($method, $url, array $payload = [])
     {
@@ -71,7 +72,7 @@ class EndpointCaller
             $this->handleErrors($response);
             // no return, will throw exception
         } else {
-            throw new UnexpectedErrorException(sprintf("Got error code: %s. Not sure how to handle it. Response: %s",
+            throw new UnexpectedStatusCodeException(sprintf("Got error code: %s. Not sure how to handle it. Response: %s",
                 $response->getStatusCode(), var_export($response->getBody()->getContents(), true)));
         }
     }
@@ -80,29 +81,32 @@ class EndpointCaller
      * @param ResponseInterface $response
      * @throws ApiKeyClientMismatchException
      * @throws ClientDisabledException
-     * @throws UnexpectedErrorException
+     * @throws ApiEndpointErrorException
      * @throws WrongApiKeyException
      */
     private function handleErrors(ResponseInterface $response)
     {
-        $body = json_decode($response->getBody()->getContents());
+        $originalError = json_decode($response->getBody()->getContents());
 
-        switch ($body->error_class) {
+        switch ($originalError->error_class) {
             case "ApiKeyNotFound":
-                throw new WrongApiKeyException(sprintf("%s: %s. Request: %s", $body->error_class,
-                    $body->error_message, var_export($body->request, true)));
+                throw new WrongApiKeyException(sprintf("%s: %s. Request: %s", $originalError->error_class,
+                    $originalError->error_message, var_export($originalError->request, true)));
                 break;
             case "ClientDisabled":
-                throw new ClientDisabledException(sprintf("%s: %s. Request: %s", $body->error_class,
-                    $body->error_message, var_export($body->request, true)));
+                throw new ClientDisabledException(sprintf("%s: %s. Request: %s", $originalError->error_class,
+                    $originalError->error_message, var_export($originalError->request, true)));
                 break;
             case "ClientNotFound":
-                throw new ApiKeyClientMismatchException(sprintf("%s: %s. Request: %s", $body->error_class,
-                    $body->error_message, var_export($body->request, true)));
+                throw new ApiKeyClientMismatchException(sprintf("%s: %s. Request: %s", $originalError->error_class,
+                    $originalError->error_message, var_export($originalError->request, true)));
                 break;
             default:
-                throw new UnexpectedErrorException(sprintf("Got error code: %s, error class: %s. Not sure how to handle it. Body of error response: %s",
-                    $response->getStatusCode(), $body->error_class, var_export($body, true)));
+                throw new ApiEndpointErrorException(
+                    $originalError,
+                    sprintf("Got error code: %s, error class: %s. Not sure how to handle it. Body of error response: %s",
+                        $response->getStatusCode(), $originalError->error_class, var_export($originalError, true))
+                );
         }
     }
 }

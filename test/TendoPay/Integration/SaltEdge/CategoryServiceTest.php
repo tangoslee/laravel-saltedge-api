@@ -9,26 +9,44 @@
 namespace TendoPay\Integration\SaltEdge;
 
 
-use Orchestra\Testbench\TestCase;
+use Mockery;
+use Mockery\MockInterface;
+use PHPUnit\Framework\TestCase;
+use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 
 class CategoryServiceTest extends TestCase
 {
-    protected function getPackageProviders($app)
+    /** @var CategoryService $objectUnderTests */
+    private $objectUnderTests;
+
+    /** @var MockInterface $endpointCallerMock */
+    private $endpointCallerMock;
+
+    protected function setUp()
     {
-        return [SaltEdgeServiceProvider::class];
+        parent::setUp();
+
+        $this->endpointCallerMock = Mockery::mock(EndpointCaller::class);
+
+        $this->objectUnderTests = new CategoryService($this->endpointCallerMock);
     }
 
     /**
      * @throws Api\SaltEdgeApiException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testShouldListAllCategories()
+    public function testShouldProperlyPassParametersForProvidersListToTheEndpointCaller()
     {
-        /** @var CategoryService $service */
-        $service = $this->app->get(CategoryService::class);
-        $categories = $service->getAll();
+        // given
+        $this->endpointCallerMock
+            ->shouldReceive("call")
+            ->with("GET", "categories")
+            ->andReturn((object)["data" => "passed"]);
 
-        $this->assertTrue(is_array($categories) || is_object($categories));
-        $this->assertNotEmpty($categories);
+        // when
+        $return = $this->objectUnderTests->getAll();
+
+        // then
+        $this->assertEquals("passed", $return);
     }
 }

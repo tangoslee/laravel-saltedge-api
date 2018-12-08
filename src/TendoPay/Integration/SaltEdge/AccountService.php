@@ -9,9 +9,25 @@
 namespace TendoPay\Integration\SaltEdge;
 
 
+use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
+
 class AccountService
 {
-    public function getList($filters = []) {
+    private $endpointCaller;
+
+    /**
+     * AccountService constructor.
+     *
+     * @param EndpointCaller $endpointCaller
+     */
+    public function __construct(EndpointCaller $endpointCaller)
+    {
+        $this->endpointCaller = $endpointCaller;
+    }
+
+
+    public function getList($filters = [])
+    {
         return [];
     }
 }
