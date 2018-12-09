@@ -11,8 +11,6 @@ namespace TendoPay\Integration\SaltEdge\Api\Accounts;
 
 class AccountsListFilter
 {
-    private static $instance;
-
     private $filters = [];
 
     /**
@@ -24,11 +22,7 @@ class AccountsListFilter
 
     public static function builder()
     {
-        if (self::$instance == null) {
-            self::$instance = new AccountsListFilter();
-        }
-
-        return self::$instance;
+        return new AccountsListFilter();
     }
 
     public function withFormId($formId)

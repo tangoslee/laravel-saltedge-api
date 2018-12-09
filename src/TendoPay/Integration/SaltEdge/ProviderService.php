@@ -8,7 +8,7 @@
 
 namespace TendoPay\Integration\SaltEdge;
 
-use GuzzleHttp\Exception\GuzzleException;
+use stdClass;
 use TendoPay\Integration\SaltEdge\Api\ApiEndpointErrorException;
 use TendoPay\Integration\SaltEdge\Api\EndpointCaller;
 use TendoPay\Integration\SaltEdge\Api\FilterDateOutOfRangeException;
@@ -25,7 +25,7 @@ class ProviderService
 
     /**
      * ProviderService constructor.
-     * @param EndpointCaller $endpointCaller
+     * @param EndpointCaller $endpointCaller injected dependency
      */
     public function __construct(EndpointCaller $endpointCaller)
     {
@@ -34,17 +34,25 @@ class ProviderService
 
 
     /**
-     * @param $code
+     * Fetches provider by provider's code.
      *
-     * @return array|\stdClass
+     * @link https://docs.saltedge.com/reference/#providers-show
      *
-     * @throws Api\ApiKeyClientMismatchException
-     * @throws Api\ClientDisabledException
-     * @throws Api\WrongApiKeyException
-     * @throws GuzzleException
-     * @throws ApiEndpointErrorException
-     * @throws InvalidProviderCodeException
-     * @throws Api\UnexpectedStatusCodeException
+     * @param $code provider's code
+     *
+     * @return stdClass the provider details
+     *
+     * @throws Api\ApiEndpointErrorException when unexpected error was returned by the API
+     * @throws Api\ApiKeyClientMismatchException when the API key used in the request does not belong to a client
+     * @throws Api\ClientDisabledException when the client has been disabled. You can find out more about the disabled
+     *         status on {@link https://docs.saltedge.com/guides/your_account/#disabled } guides page
+     * @throws Api\UnexpectedStatusCodeException when status code was different than declared by API documentation
+     *         {@link https://docs.saltedge.com/reference/#errors }
+     * @throws Api\WrongApiKeyException when the API key with the provided App-id and Secret does not exist or is
+     *         inactive
+     * @throws \GuzzleHttp\Exception\GuzzleException only declared due to lower method's declarations, but should never
+     *         be thrown
+     * @throws InvalidProviderCodeException when the provider code is not present in our system
      */
     public function getByCode($code)
     {
@@ -62,18 +70,26 @@ class ProviderService
     }
 
     /**
-     * @param ProvidersListFilter $filters
+     * Fetches list of providers filtered by {@see ProvidersListFilter} from the API.
      *
-     * @return mixed
+     * @link https://docs.saltedge.com/reference/#providers-list
      *
-     * @throws ApiEndpointErrorException
-     * @throws Api\ApiKeyClientMismatchException
-     * @throws Api\ClientDisabledException
-     * @throws Api\UnexpectedStatusCodeException
-     * @throws Api\WrongApiKeyException
-     * @throws FilterDateOutOfRangeException
-     * @throws FilterValueOutOfRangeException
-     * @throws GuzzleException
+     * @param ProvidersListFilter $filters filters the results
+     *
+     * @return stdClass[] list of the providers
+     *
+     * @throws Api\ApiEndpointErrorException when unexpected error was returned by the API
+     * @throws Api\ApiKeyClientMismatchException when the API key used in the request does not belong to a client
+     * @throws Api\ClientDisabledException when the client has been disabled. You can find out more about the disabled
+     *         status on {@link https://docs.saltedge.com/guides/your_account/#disabled } guides page
+     * @throws Api\UnexpectedStatusCodeException when status code was different than declared by API documentation
+     *         {@link https://docs.saltedge.com/reference/#errors }
+     * @throws Api\WrongApiKeyException when the API key with the provided App-id and Secret does not exist or is
+     *         inactive
+     * @throws \GuzzleHttp\Exception\GuzzleException only declared due to lower method's declarations, but should never
+     *         be thrown
+     * @throws FilterDateOutOfRangeException when provided a date value that does not fit in admissible range
+     * @throws FilterValueOutOfRangeException whea provided a value (e.g. id) which exceeds integer limit
      */
     public function getList(ProvidersListFilter $filters)
     {

@@ -13,8 +13,6 @@ use DateTime;
 
 class ProvidersListFilter
 {
-    private static $instance;
-
     private $filters = [];
 
     /**
@@ -26,11 +24,7 @@ class ProvidersListFilter
 
     public static function builder()
     {
-        if (self::$instance == null) {
-            self::$instance = new ProvidersListFilter();
-        }
-
-        return self::$instance;
+        return new ProvidersListFilter();
     }
 
     public function withFormId($formId)

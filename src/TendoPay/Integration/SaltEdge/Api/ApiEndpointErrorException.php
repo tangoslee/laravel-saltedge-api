@@ -16,6 +16,14 @@ class ApiEndpointErrorException extends SaltEdgeApiException
 {
     private $originalError;
 
+    /**
+     * ApiEndpointErrorException constructor. Note: The message is NOT binary safe.
+     *
+     * @param stdClass $originalError the original unmodified error object as received from the API.
+     * @param string $message [optional] The Exception message to throw.
+     * @param int $code [optional] The Exception code.
+     * @param Throwable $previous [optional] The previous throwable used for the exception chaining.
+     */
     public function __construct(
         stdClass $originalError,
         string $message = "",
@@ -27,6 +35,7 @@ class ApiEndpointErrorException extends SaltEdgeApiException
     }
 
     /**
+     * Returns the unmodified error object as received from the API.
      * @return stdClass
      */
     public function getOriginalError()
