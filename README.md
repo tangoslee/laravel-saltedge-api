@@ -41,12 +41,12 @@ or add the dependency in your `composer.json` and update composer dependencies:
 
 ## Configuration
 
-In laravel's .env file add following keys with proper values, e.g.:
+In laravel's .env file add following keys with proper values Which you can attain from [SaltEdge](https://www.saltedge.com/client_users/sign_up), e.g.:
 
 ```$json
-SALTEDGE_URL=https://www.saltedge.com/api/v4/
-SALTEDGE_APP_ID=WM75_qN1N3KJYCl6IjhZgqGtRAY-i614fuAjV4UnGw9
-SALTEDGE_SECRET=5o12Ea41LHXN5ioWSOdaAvL8Q-EHtoW2Z7GQz2T1zjp
+SALTEDGE_URL=
+SALTEDGE_APP_ID=
+SALTEDGE_SECRET=
 ```
 
 ## What's included
