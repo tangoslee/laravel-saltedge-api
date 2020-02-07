@@ -18,8 +18,8 @@ Add new git repository to the `composer.json` configuration:
 ```
 
 Next run following command:
- 
-`composer require tendopay/laravel-dragonpay-api`
+
+`composer require tendopay/laravel-saltedge-api`
 
 or add the dependency in your `composer.json` and update composer dependencies:
 
