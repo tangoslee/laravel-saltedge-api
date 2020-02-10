@@ -49,6 +49,14 @@ class SaltEdgeServiceProvider extends ServiceProvider
             return new ProviderService($app->get(EndpointCaller::class));
         });
 
+        $this->app->singleton(TransactionService::class, function (Application $app) {
+            return new TransactionService($app->get(EndpointCaller::class));
+        });
+
+        $this->app->singleton(ConnectionService::class, function (Application $app) {
+            return new ConnectionService($app->get(EndpointCaller::class));
+        });
+
         $this->app->singleton(EndpointCaller::class, function (Application $app) {
             return new EndpointCaller(
                 new Client(),

@@ -8,6 +8,7 @@
 
 namespace TendoPay\Integration\SaltEdge\Api;
 
+use ConnectionNotFoundException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
@@ -102,26 +103,33 @@ class EndpointCaller
      */
     private function handleErrors(ResponseInterface $response)
     {
-        $originalError = json_decode($response->getBody()->getContents());
+        $originalError = json_decode($response->getBody()->getContents(), false);
 
-        switch ($originalError->error_class) {
-            case "ApiKeyNotFound":
-                throw new WrongApiKeyException(sprintf("%s: %s. Request: %s", $originalError->error_class,
-                    $originalError->error_message, var_export($originalError->request, true)));
+        $errorClass = $originalError->error_class ?? $originalError->error->class ?? null;
+        $errorMessage = $originalError->error_message ?? $originalError->error->message ?? null;
+
+        switch ($errorClass) {
+            case 'ApiKeyNotFound':
+                throw new WrongApiKeyException(sprintf('%s: %s. Request: %s', $errorClass,
+                    $errorMessage, var_export($originalError->request, true)));
                 break;
-            case "ClientDisabled":
-                throw new ClientDisabledException(sprintf("%s: %s. Request: %s", $originalError->error_class,
-                    $originalError->error_message, var_export($originalError->request, true)));
+            case 'ClientDisabled':
+                throw new ClientDisabledException(sprintf('%s: %s. Request: %s', $errorClass,
+                    $errorMessage, var_export($originalError->request, true)));
                 break;
-            case "ClientNotFound":
-                throw new ApiKeyClientMismatchException(sprintf("%s: %s. Request: %s", $originalError->error_class,
-                    $originalError->error_message, var_export($originalError->request, true)));
+            case 'ClientNotFound':
+                throw new ApiKeyClientMismatchException(sprintf('%s: %s. Request: %s', $errorClass,
+                    $errorMessage, var_export($originalError->request, true)));
+                break;
+            case 'ConnectionNotFound':
+                throw new ConnectionNotFoundException(sprintf('%s: %s. Request: %s', $errorClass,
+                    $errorMessage, var_export($originalError->request, true)));
                 break;
             default:
                 throw new ApiEndpointErrorException(
                     $originalError,
-                    sprintf("Got error code: %s, error class: %s. Not sure how to handle it. Body of error response: %s",
-                        $response->getStatusCode(), $originalError->error_class, var_export($originalError, true))
+                    sprintf('Got error code: %s, error class: %s: %s. Not sure how to handle it. Body of error response: %s',
+                        $response->getStatusCode(), $errorClass, $errorMessage, var_export($originalError->request, true))
                 );
         }
     }
